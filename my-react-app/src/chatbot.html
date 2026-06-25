@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>chat bot</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+
+
+
+
+      function ChatInput({chatMessages,setChatMessages}) {
+
+        const [inputText,setInputText] = React.useState('');              //'' empty quotes are used because in starting the search bar is empty so that the corrent state
+
+
+        function saveInputText(event){
+          setInputText(event.target.value);
+        }
+
+        function sendMessage(){
+
+          const newChatMessages = [
+          ...chatMessages,
+          {
+            message:inputText,
+            sender:'user',
+            id:crypto.randomUUID() 
+          }
+          ];
+            
+            setChatMessages(newChatMessages);
+
+           const response = Chatbot.getResponse(inputText);
+
+
+           setChatMessages([
+          ...newChatMessages,
+          {
+            message:response,
+            sender:'robot',
+            id:crypto.randomUUID() 
+          }
+          ]);
+
+          setInputText('');
+        }
+
+        return (
+          <>
+            <input placeholder="send a message to chatbot"  onChange={saveInputText} value={inputText}/>
+            <button
+            onClick={sendMessage}
+            >send</button>
+          </>
+        );
+      }
+      function ChatMessage({ message, sender }) {          //tgis is the component which is beeing shown in the browser
+        // const message=props.message;
+        // const sender = props.sender;
+
+        /*if(sender === 'robot'){
+    return(
+      <div>
+        <img src="robot.png" width="50px"/>
+          {message}
+      </div>
+    );
+  }
+    */
+        return (
+          <div>
+            {sender === "robot" && <img src="robot.png" width="50px" />}
+            {message}
+            {sender === "user" && <img src="user.png" width="50px" />}
+          </div>
+        );
+      }
+
+
+      function ChatMessages({chatMessages}) {
+
+        return (
+          <>
+            {chatMessages.map((chatMessage) => {
+              return (
+                <ChatMessage                         //the above component is beign called here for printig and also the attributes are gettign values from the above chatMessages array
+                  message={chatMessage.message}
+                  sender={chatMessage.sender}
+                  key={chatMessage.id}
+                />
+              );
+            })}
+          </>
+        );
+      }
+
+      function App() {
+
+        const [chatMessages,setChatMessages] = React.useState([
+          {
+            //now this create a array of objects containis message and sender data
+            message: "hello chatbot",
+            sender: "user",
+            id: "id1",
+          },
+          {
+            message: "helli! how can i help u",
+            sender: "robot",
+            id: "id2",
+          },
+          {
+            message: "can u get me todays date",
+            sender: "user",
+            id: "id3",
+          },
+          {
+            message: "Today is sept 27",
+            sender: "robot",
+            id: "id4",
+          }
+        ]);
+        //const [chatMessages,setChatMessages] = array;       //destructured for of assigning 1st and second values of usestate to methods 
+        // const chatMessages = array[0];
+        // const setChatMessages = array[1];
+
+        return (
+          <>
+            <ChatInput 
+              chatMessages = {chatMessages}
+              setChatMessages = {setChatMessages}
+            />
+            <ChatMessages 
+            chatMessages = {chatMessages}/>                
+          </>
+        );
+      }
+
+      const container = document.querySelector(".js-container");
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>
