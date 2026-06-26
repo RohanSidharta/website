@@ -1,5 +1,6 @@
 import './checkout-header.css';
 import './checkout.css';
+import {Link} from 'react-router';
 
 export function CheckoutPage() {
 
@@ -40,7 +41,7 @@ export function CheckoutPage() {
               <div className="cart-item-details-grid">
                 <img
                   className="product-image"
-                  src="images/products/Linkthletic-cotton-socks-6-pairs.jpg"
+                  src="images/products/athletic-cotton-socks-6-pairs.jpg"
                 />
 
                 <div className="cart-item-details">
