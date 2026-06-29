@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useState, useEffect,Fragment } from "react";
 
-import { Header } from "../components/Header";
+import { Header } from "../../components/Header";
 import "./orders.css";
 import { Link } from "react-router";
 import dayjs from "dayjs";
-import { formatMoney } from "../utils/money";
+import { formatMoney } from "../../utils/money";
+import { Productdetails } from "./ProductDetails";
 
 export function OrdersPage({ cart }) {
   const [orders, setOrders] = useState([]);
@@ -56,24 +57,7 @@ export function OrdersPage({ cart }) {
                             <img src={orderProduct.product.image} />
                           </div>
 
-                          <div className="product-details">
-                            <div className="product-name">
-                              {orderProduct.product.name}
-                            </div>
-                            <div className="product-delivery-date">
-                              Arriving on: {dayjs(orderProduct.estimatedDeliveryTimeMs).format('MMMM D')}
-                            </div>
-                            <div className="product-quantity">Quantity: {orderProduct.quantity}</div>
-                            <button className="buy-again-button button-primary">
-                              <img
-                                className="buy-again-icon"
-                                src="images/icons/buy-again.png"
-                              />
-                              <span className="buy-again-message">
-                                Add to Cart
-                              </span>
-                            </button>
-                          </div>
+                          <Productdetails orderProduct={orderProduct}/>
 
                           <div className="product-actions">
                             <Link to="/tracking">
